@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Low Cost Electronics components">
+    <meta name="keywords" content="Electronics,components,circuit">
+    <meta name="author" content="Prabhu Palaniappan">
+    <title>DIY - Payment</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" type = "text/css" href="./css/payment.css">
+<!--    <link rel="stylesheet" type = "text/css" href="./css/test.css"> -->
+    <script src="jquery-3.3.1.js"></script>
+
+  </head>
+  <script type="text/javascript">
+
+      /*
+      // Check browser support
+      if (typeof(Storage) !== "undefined") {
+        // Retrieve
+         getOrder = localStorage.getItem('orderSummary');
+
+//         var orderNum = val(0);
+        console.log('Order Summary Details', getOrder);
+        getOrder = JSON.parse(getOrder);
+        console.log('Order Summary 1', getOrder.orderNum);
+  //      console.log('Order Summary 2', JSON.parse(val(0)));
+  //      document.write(localStorage.orderNum);
+  //      console.log("LocalStorage ", localStorage.orderNum);
+      } else {
+        console.log("Sorry, your browser does not support Web Storage...");
+      }
+
+      */
+
+      var orderAmt;
+        $(document).ready(() => {
+          console.log("Inside order");
+          var requestURL = 'order';
+          // var orderAmt;
+          $.ajax({
+            url:requestURL,
+            type: 'GET',
+            datatype: 'json',
+            success: (data) => {
+              $.each(data, function(key, value){
+                var prodid = value.ord_no;
+  //               orderAmt = value.ord_amt;
+  orderAmt = 500;
+                console.log('Product ID ', prodid);
+                console.log('Order Amount ', orderAmt);
+                var template = $('#order-template').html();
+                template = template.replace(/{{ord_no}}/ig, value.ord_no);
+                template = template.replace(/{{ord_date}}/ig, value.ord_date);
+        //        template = template.replace(/{{ord_amt}}/ig, value.ord_amt);
+              template = template.replace(/{{ord_amt}}/ig, orderAmt);
+                $('#order-container').append(template);
+              }); // End of Each Loop
+            } // End of Success
+          });// End of Ajax
+        }); // End of document
+
+//Payment Gateway
+/*        var instance = Razorpay({
+          key_id: 'rzp_test_5kFMmaA0cmhkxN',
+          key_secret: 'Glcfv0wiN3MZMzbQeol9AS4H'
+        })
+*/
+
+    //   <div class="pay-det"><h2>Order No :</h2><script type="text/javascript">document.write(getOrder.orderNum) <//>script></div>
+  </script>
+
+  <body>
+    <script id="order-template" type="text/x-custom-template">
+
+          <div id="ord-summary">
+            <div class="order-details">
+              <h1>DIYStore Order Summary</h1>
+                <div class="order">
+                  <label id="label">Order # :</label>
+                  <label id="value">{{ord_no}}</label>
+                </div>
+                <div class="order">
+                  <label id="label">Order Date :</label>
+                  <label id="value">{{ord_date}}</label>
+                </div>
+                <div class="order">
+                  <label id="label">Order Total :</label>
+                  <label id="value">{{ord_amt}}</label>
+                </div>
+            </div>
+          </div>
+    </script>
+
+    <div class="wrapper">
+      <div class="container">
+        <header>
+          <h1 id="branding"><span class="highlight">DIY</span>store.in</h1>
+        </header>
+
+        <div id="order-container" class="container">    </div> <!-- Order Container Ends -->
+
+        <form id="contact-form" method="POST" action="/client">
+          <div id="user-info">
+            <h1>User Details</h1>
+            <div class="name">
+              <label id="label" for="fname">First Name </label>
+              <input id="name" type="text" name="fname"> <br>
+              <label id="label" for="lname">Last Name </label>
+              <input id="name" type="text" name="lname">
+            </div>
+            <div id="useraddress">
+              <label for="address">Address</label>
+        <!--      <input type="text" name="address" value=""> -->
+              <textarea rows="4" cols="50" name="address" form="usrform"></textarea>
+            </div>
+  <!--          <div id="useraddress">
+              <label for="phone">Phone</label>
+              <input type="text" name="phone" value="">
+            </div>
+            <div id="useraddress">
+              <label for="email">Email</label>
+              <input type="email" name="email">
+            </div> -->
+            <div id="buttons">
+              <input class="button" type="submit" value="SUBMIT" />
+            </div>
+          </div>
+        </form>
+
+        <div class="payment"><button id="rzp-button1">Pay</button></div>
+
+  <!--      <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
+
+
+      </div> <!-- Container Ends -->
+    </div> <!-- Wrapper Ends -->
+
+    <footer class="footer">
+        <div class="copyright">DIYStore.in, Copyright &copy; 2018</div>
+         <div class="phone">
+         <img src="./img/phone.png" alt="Phone" width="20" height="20">&nbsp;&nbsp;+91 9986437885</div>
+    </footer>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+    console.log("In Razorpay");
+    var options = {
+        "key": "rzp_test_5kFMmaA0cmhkxN",
+        "amount": String(orderAmt), // 2000 paise = INR 20
+        "name": "Merchant Name",
+        "description": "Purchase Description",
+        "image": "/your_logo.png",
+        "handler": function (response){
+            alert(response.razorpay_payment_id);
+        },
+        "prefill": {
+            "name": "Gaurav Kumar",
+            "email": "test@test.com"
+        },
+        "notes": {
+            "address": "Hello World"
+        },
+        "theme": {
+            "color": "#F37254"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+
+    document.getElementById('rzp-button1').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+    </script>
+  </body>
+</html>

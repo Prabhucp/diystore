@@ -1,0 +1,26 @@
+{
+  "name": "diy_local",
+  "version": "1.0.0",
+  "description": "DIY Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "diy",
+    "components"
+  ],
+  "author": "Prabhu",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "debug": "^4.1.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "razorpay": "^2.0.3",
+    "sqlite3": "^4.0.4",
+    "uuid": "^3.3.2"
+  }
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Low Cost Electronics components">
+    <meta name="keywords" content="Electronics,components,circuit">
+    <meta name="author" content="Prabhu Palaniappan">
+    <title>DIY Home</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="jquery-3.3.1.js"></script>    
+    <script src="data_call.js"></script>
+  </head>
+  <script type="text/javascript">
+    cartCount();  // Function to get the count of Items from Cart
+  </script>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <header>
+  <!--            <div ">
+                  <div id="logo"><h1><span class="highlight">DIY</span>store.in</h1></div>
+              </div> -->
+    <!--          <img id="logo" src="./img/solder1.jpg" alt="cart"  width="30" height="30"> -->
+          <h1 id="branding"><span class="highlight">DIY</span>store.in</h1>
+          <nav>
+            <ul>
+              <li class="navcurrent"><a href="main.html">Home</a></li>
+              <li><a href="#">Products</a>
+                <ul>
+                  <li><a href="./product.html?page=solder">Soldering Accessories</a></li>
+                  <li><a href="./product.html?page=module">Modules</a></li>
+                  <li><a href="./product.html?page=active">Active Components</a></li>
+                  <li><a href="./product.html?page=passive">Passive Components</a></li>
+                </ul>
+              </li>
+              <li><a href="contact.html">Contact Us</a></li>
+
+              <li id="cart-icon"><a href="./cart.html"><img src="./img/cartd.png" onmouseover="this.src='./img/carts.png'"
+                      onmouseout="this.src='./img/cartd.png'" alt="cart"  width="20" height="20"></a></li>
+              <li id="cart-count"><a href="#"> </a></li>
+            </ul>
+          </nav>
+<!--          <div id="cart-count">
+                <svg height="30" width="60">
+                  <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%"
+                      style="stop-color:rgb(255,255,0);stop-opacity:1" />
+                      <stop offset="100%"
+                      style="stop-color:rgb(255,0,0);stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <ellipse cx="30" cy="15" rx="22.5" ry="10.5" fill="url(#grad1)" />
+                  <text fill="#ffffff" font-size="10" font-family="Verdana"
+                  x="20" y="18">119</text>
+                Sorry, your browser does not support inline SVG.
+              </svg>
+            </div> -->
+        </header>
+        <div class="showcase">
+            <div id="bannerleft">
+              <img class="bg-image" src="./img/cb5.jpg" alt="Soldering">
+                    <!-- width="1424"  height="394" -->
+                  <!--  <div id="bantitle">Affordable Electronic Components</div>-->
+            </div>
+
+            <div id="bannerright">
+              <article>
+                <h1>Affordable Electronic Components</h1><br>
+                <p>DIYStore India is a young business with a goal of enabling the <strong><span style="color:yellow";>
+                  'MAKER MOVEMENT'</span></strong> in India. Our primary aim is to provide common semiconductors and related items
+                  at the correct price.</p>
+                <br><br>
+        <!--        <p class="hidden">-->
+                <p class="hidden">We ourselves use the products we sell and DIYStore was launched because we found it hard to source
+                   semiconductors in India via mail order at the right prices. Of course one could always buy the items
+                   from China via AxxExpress, TxxBxx or similar websites but we found the lead times to be detrimental
+                   to quick-turnaround prototyping.</p>
+              </article>
+            </div>
+        </div>
+
+        <div class="categories">
+              <div class="box">
+                <a href="./product.html?page=solder">
+    <!--            <a href="./product.html"> -->
+                  <img src="./img/cat1.jpg" alt="Soldering" width="200" height="200">
+                </a>
+                <div class="inner">Soldering Accessories</div>
+              </div>
+
+              <div class="box">
+                <a href="./product.html?page=module">
+                  <img src="./img/cat2.jpg" alt="Modules" width="200" height="200">
+                </a>
+                <div class="inner">Modules</div>
+              </div>
+
+              <div class="box">
+                <a href="./product.html?page=active">
+                  <img src="./img/cat3.jpg" alt="Active Components" width="200" height="200">
+                </a>
+                <div class="inner">Active Components</div>
+              </div>
+
+              <div class="box">
+                <a href="./product.html?page=passive">
+                  <img src="./img/cat4.jpg" alt="Passive Components" width="200" height="200">
+                </a>
+                <div class="inner">Passive Components</div>
+              </div>
+        </div>
+
+      </div> <!-- Container End -->
+    </div> <!-- Wrapper End -->
+
+    <footer class="footer">
+        <div class="copyright">DIYStore.in, Copyright &copy; 2018</div>
+         <div class="phone">
+         <img src="./img/phone.png" alt="Phone" width="20" height="20">&nbsp;&nbsp;+91 9986437885</div>
+    </footer>
+  </body>
+</html>

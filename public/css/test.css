@@ -1,0 +1,32 @@
+h1{
+   text-align: center;
+   background-color:  #F8C15C;
+   border: 1px solid black;
+   margin:1px;
+
+}
+.order-details{
+    border: 1px solid black;
+    display: inline-block;
+    width: 80%;
+
+}
+
+label{
+   width:180px;
+   clear:left;
+   text-align:left;
+   padding-right:10px;
+   border: 1px solid black;
+   float: left;
+   margin-right: 20px;
+   margin-bottom: 10px;
+   margin-top: 5px;
+   margin-left: 25px;
+
+}
+
+input {
+   float:left;
+    margin-top: 5px;
+}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Low Cost Electronics components">
+  <meta name="keywords" content="Electronics,components,circuit">
+  <meta name="author" content="Prabhu Palaniappan">
+  <title>DIY Solder Products</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="jquery-3.3.1.js"></script>
+  <script src="common.js"></script>
+  <script src="data_call.js"></script>
+</head>
+
+<script type="text/javascript">
+
+  cartCount();  // Function to get the count of Items from Cart
+//Calling Function to get Category Parameter value from URL
+  var catid = parseURLParameter("page"); // Page = Solder, Module etc
+  var requestURL = 'product/' + catid;
+  var userid = cookie();
+
+  // Procedure of getting the backend value by passing the URL and getting the
+  // Sql Query Results. Replace those results in the appropriate html position
+  $(document).ready(() => {
+    $.ajax({
+      url: requestURL,
+      type: 'GET',
+      datatype: 'json',
+      success: (data) => {
+        $.each(data, function(key, value){  // For Each Product Row fetched from Backend
+          console.log('key : ', key);
+          console.log('value : ', value);
+
+          var template = $('#product-template').html();  // Introducing the Main HTML Template
+          var prodid = value.prd_id;
+          var quantity = value.quantity;
+          var image = './img/' + value.image;
+          var price = value.price;
+
+          if (Number(quantity) == 0) {quantity = 1};
+          console.log('Set quantity : ', quantity);
+          template = template.replace(/{{prodname}}/ig, value.prd_name);
+          template = template.replace(/{{prodimg}}/ig, image);
+          template = template.replace(/{{details-1}}/ig, value.prd_detail);
+          var price = '<p id="price_'+prodid+'"> '+ price + '</p>';
+          console.log('price : ', price);
+          template = template.replace(/{{price}}/ig, price);
+          var addCartBtn = '<button id="button_'+prodid+'" class="add-cart" type="button";>add to cart</button>';
+          template = template.replace(/{{add_to_cart}}/ig, addCartBtn);
+          var goCartBtn = '<button id="button_cart" class="go-cart" type="button";>go to cart</button>';
+          template = template.replace(/{{go_to_cart}}/ig, goCartBtn);
+          var quantity = '<input id="quantity_'+prodid+'" type="number" name="qty" value="'+ quantity +'" size="3" min="0">';
+          template = template.replace(/{{quantity_data}}/ig, quantity);
+
+          $('#product-container').append(template);  //Append the HTML template with the Record Values from Backend
+        }); // End of Each Loop
+
+        console.log("userid : ", userid);
+        addCart(); // Function to Add Items to Cart
+        goCart();
+      } // End of Success
+    }); // End of Ajax
+
+
+    // function goCart(){
+    //   console.log("goCart Called");
+    //
+    //     $('.go-cart').click(function() {
+    //        window.location = '/cart.html'
+    //     });
+    // };
+
+//     function addCart() {
+//       $('.cart-class').click(function() {
+//         var buttonid = this.id;
+//         console.log("button id ", buttonid);
+//         prodid = buttonid.substring(7,buttonid.length);
+//         quantity = document.getElementById('quantity_'+ prodid).value;
+//         price = document.getElementById('price_'+ prodid).innerHTML;
+//
+// // POST routine to Add CART details in table
+// //        if (sessid != null) {
+//       if (userid != null) {
+//         console.log("Userid Parameter for Post : ", userid);
+//         console.log("price : ", price);
+//         $.ajax({
+//           url:  'product',
+//           type: 'POST',
+//           data: {
+//                 user: userid,
+//                 product: prodid,
+//                 quantity: quantity,
+//                 price: price,
+//                 },
+//           success: (data) => {alert("Selected Item added to Cart");}
+//         }); //End of Ajax
+//       } else {
+//         alert("Session is Empty");
+//       }
+//
+//       cartCount();  // Function to get the count of Items from Cart
+//       }); //End of Cart Class
+//     } // End of addCart Function
+
+/*
+    function cartLoad(){
+      $.ajax({
+        url: 'product',
+        type: 'GET',
+        datatype: 'json',
+        success:(data) =>{
+          $.each(data, function(key, value){
+            console.log('value : ', value.count);
+            cartCount = value.count;
+            document.getElementById("cart-count").innerHTML = cartCount;
+
+            $("#cart-count").replaceWith( '<li id="cart-count"><a href="#">' + cartCount + '</a></li>');
+
+    //          var textnode = document.createTextNode(cartCount);
+    //          var item = document.getElementById("cart-count").childNodes;
+    //          item.replaceChild(textnode, item.childNodes);
+
+    //        var textnode = document.createTextNode("Water");
+    //        var item = document.getElementById("myList").childNodes[0];
+    //        item.replaceChild(textnode, item.childNodes[0]);
+      //      $("#cart-count").text("1");
+
+    //      var template = $('#product-template').html();  // Introducing the Main HTML Template
+    //        template = template.replace(/{{cartCount}}/ig, cartCount);
+    //        $('#product-container').append(template);  //Append the HTML template with the Record Values from Backend
+
+          }) // For Each Ends
+        } // Data Ends
+      }) // AJAX Ends
+    } // Function cartload Ends
+*/
+      $(document).ajaxError(() => {
+        $('#status').html('Error: unknown ajaxError!');
+      });
+
+    }); // End of document
+  </script>
+
+  <body>
+    <script id="product-template" type="text/x-custom-template">
+      <div class="products">
+        <div class="prod-box">
+          <h2 id="prodname">{{prodname}}</h2>
+            <div class="prod-detail">
+                <div class="prod-img">
+                  <img id="prodimg" alt="Solder Flux" src="{{prodimg}}"></img>
+                </div>
+
+                <div id="details-1">{{details-1}}</div>
+
+                <div id="details-2" class="details-2">
+                   <div id="d2-price">
+                      <p>Price:</p>
+
+                      <p id="price"><span>&#8377;</span>{{price}}</p>
+                   </div>
+                   <div id="d2-qty">
+                      <label id="big">Quantity: {{quantity_data}}</label>
+                      <label id="small">Qty: <input id="qty" type="number" name="qty" value="1" size="3"></label>
+                   </div>
+                   <div id="buttons">{{add_to_cart}} {{go_to_cart}}</div>
+                </div> <!-- Details 2 End -->
+            </div> <!-- Product Detail End -->
+        </div>
+      </div>
+      <hr class="seperator">
+    </script>
+
+    <div class="wrapper">
+      <div id="product-container" class="container">
+        <header>
+            <h1 id="branding"><span class="highlight">DIY</span>store.in</h1>
+            <nav>
+              <ul>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="#">Products</a>
+                  <ul>
+                    <li><a href="./product.html?page=solder">Soldering Accessories</a></li>
+                    <li><a href="./product.html?page=module">Modules</a></li>
+                    <li><a href="./product.html?page=active">Active Components</a></li>
+                    <li><a href="./product.html?page=passive">Passive Components</a></li>
+                  </ul>
+                </li>
+                <li><a href="contact.html">Contact Us</a></li>
+<!--                <li id="small-icon"><a href="./cart.html"><img src="./img/cartd.png" onmouseover="this.src='./img/carts.png'"
+                        onmouseout="this.src='./img/cartd.png'" alt="cart"  width="20" height="20"></a></li> -->
+                <li id="cart-icon"><a href="./cart.html"><img src="./img/cartd.png" onmouseover="this.src='./img/carts.png'"
+                        onmouseout="this.src='./img/cartd.png'" alt="cart"  width="20" height="20"></a></li>
+
+                <li id="cart-count"><a href="#"></a></li>
+<!--                    <svg width="50" height="50">
+                      <circle cx="25" cy="25" r="15"
+                        stroke="#083045" stroke-width="2" fill="orange" />
+                          Sorry, your browser does not support inline SVG.
+                    </svg> -->
+
+
+<!--                   <script id="product-template" type="text/x-custom-template">
+                    <li id="cart-count"><a href="#">{{cartCount}}</a></li>
+                  </script> -->
+              </ul>
+            </nav>
+        </header>
+    <!--     <body></body> -->
+      </div> <!-- Container End -->
+    </div> <!-- Wrapper End -->
+
+    <footer class="footer">
+      <div class="copyright">DIYStore.in, Copyright &copy; 2018</div>
+      <div class="phone">
+      <img src="./img/phone.png" alt="Phone" width="20" height="20">&nbsp;&nbsp;+91 9893253310</div>
+    </footer>
+  </body>
+</html>

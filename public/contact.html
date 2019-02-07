@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Low Cost Electronics components">
+    <meta name="keywords" content="Electronics,components,circuit">
+    <meta name="author" content="Prabhu Palaniappan">
+    <title>DIY Contact</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="jquery-3.3.1.js"></script>
+    <script src="data_call.js"></script>
+  </head>
+
+  <script type="text/javascript">
+    cartCount();  // Function to get the count of Items from Cart
+  </script>
+
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <header>
+<!--        <div id="branding">
+            <div id="logo"><h1><span class="highlight">DIY</span>store.in</h1></div>
+            <div id="small-icon">
+              <a href="./cart.html">
+                <img src="./img/cart.png" alt="cart"  width="20" height="20">
+              </a>
+            </div>
+        </div> -->
+          <h1 id="branding"><span class="highlight">DIY</span>store.in</h1>
+          <nav>
+            <ul>
+              <li><a href="main.html">Home</a></li>
+              <li><a href="#">Products</a>
+                <ul>
+                  <li><a href="./product.html?page=solder">Soldering Accessories</a></li>
+                  <li><a href="./product.html?page=module">Modules</a></li>
+                  <li><a href="./product.html?page=active">Active Components</a></li>
+                  <li><a href="./product.html?page=passive">Passive Components</a></li>
+                </ul>
+              </li>
+              <li class="navcurrent"><a href="contact.html">Contact Us</a></li>
+<!--              <li id="small-icon"><a href="./cart.html"><img src="./img/cart.png" alt="cart"  width="20" height="20"></a></li> -->
+              <li id="cart-icon"><a href="./cart.html"><img src="./img/cartd.png" onmouseover="this.src='./img/carts.png'"
+                      onmouseout="this.src='./img/cartd.png'" alt="cart"  width="20" height="20"></a></li>
+              <li id="cart-count"><a href="#"> </a></li>
+            </ul>
+          </nav>
+      </header>
+
+      <div class="addr">
+        <p><span style="color:#143d5d;font-size:20px;font-weight:bold;">DIY</span>Store India</p><br>
+        <p><span style="color:#143d5d;font-size:20px;font-weight:bold;"> Mobile:</span> +91 9986437885</p>
+        <p><span style="color:#143d5d;font-size:20px;font-weight:bold;">E-mail:</span> support@diystore.in</p><br>
+        <p><span style="color:#143d5d;font-size:20px;font-weight:bold;">Address:</span>
+        <p>Sraddha Green Meadows,<p>
+        <p>Rustam Bagh, Kodihalli,</p>
+        <p>Bangalore 560017</p>
+      </div>
+
+    </div> <!-- Wrapper -->
+  </div> <!-- Container -->
+
+    <footer class="footer">
+        <div class="copyright">DIYStore.in, Copyright &copy; 2018</div>
+        <div class="phone">
+        <img src="./img/phone.png" alt="Phone" width="20" height="20">&nbsp;&nbsp;+91 9986437885</div>
+    </footer>
+  </body>
+</html>

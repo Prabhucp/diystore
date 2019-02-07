@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Low Cost Electronics components">
+    <meta name="keywords" content="Electronics,components,circuit">
+    <meta name="author" content="Prabhu Palaniappan">
+    <title>DIY Payment</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="jquery-3.3.1.js"></script>
+    <script src="common.js"></script>
+    <script src="data_call.js"></script>
+</head>
+
+<script type="text/javascript">
+
+//Global
+
+
+function paymentGateway(){
+  console.log("Payment Gateway Activated");
+
+//  Creates Order Number
+    ordUser = userid.substring(4, 8);
+    var today = new Date();
+    var dd = ("0" + today.getDate()).slice(-2); // prefixes 0 for single digit day
+    var mm = ("0" + (today.getMonth() + 1)).slice(-2);  // prefixes 0 for single digit month
+    var yy = today.getFullYear().toString().substr(-2);
+    var dt = dd.toString() + mm.toString() + yy.toString();
+    var tm = today.getTime().toString().substr(-6);
+    var orderNum = ordUser + '-' + dt + tm;
+    orderDate = today.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+
+  //  new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+  //  replace(/T/, ' ').      // replace T with a space
+  //   replace(/\..+/, '')     // delete the dot and everything after
+  //  now.format("isoDateTime");
+
+    var orderAmount = grandTotal;
+    var orderStatus = 'C'
+  //  ordDate =	strftime('%Y-%m-%d %H:%M:%S', today)
+    console.log('ordDate ', orderDate);
+    console.log('userid + date ', orderNum);
+    console.log('OrderAmount ', orderAmount);
+
+/*    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+            time = d.getTime().toString().substr(11, 2);
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-') + time;
+    } */
+
+    orderDetail();
+
+    function orderDetail(){
+      $.ajax({
+        url: 'payment',
+        type:'POST',
+        data: {
+                orderNum : orderNum,
+                userid : userid,
+                orderDate : orderDate,
+                orderAmt : grandTotal,
+                orderStat : 'C',
+        },
+        success: (data) => {alert("Order Details Inserted into Order Table");}
+      }); //End of Ajax
+    } //End of Order Detail
+
+//  localStorage.setItem("orderNum", orderNum);
+
+/*  storeOrder();
+
+  function storeOrder(){
+    var setOrder = {
+      "orderNum" : orderNum,
+      "userid" : userid,
+      "orderDate" : orderDate,
+      "orderAmt" : grandTotal,
+      "orderStat" : "C"
+    }
+    localStorage.setItem('orderSummary', JSON.stringify(setOrder));
+  };
+*/
+    window.location = 'payment.html';
+} // End of Payment Gateway
+
+  $(document).ready(() => {
+    userid = cookie();
+    var requestURL = 'cart/' + userid;
+    console.log(requestURL);
+
+    $.ajax({
+//        url:'payment/',
+      url: requestURL,
+      type: 'GET',
+      datatype: 'json',
+      success: (data) => {
+      console.log('Ajax Success');
+        var tabval = '';
+        var total = 0;
+        var shipment = 0;
+        var grandTotal = 0;
+
+        $.each(data, function(key, value){  // For Each Product Row fetched from Backend
+          var keyval = parseInt(key += 1);
+          var prodid = value.prd_id;
+          var price = (value.price * value.quantity).toFixed(2);
+          shipment += value.shipment;
+          total += (value.price * value.quantity);
+
+          tabval += '<tr>';
+          tabval += '<td id="sno">'+ keyval + '</td>';
+          tabval += '<td id="picture"> <img src="./img/' + value.image +'" alt="Soldering" width="50"></td>';
+          tabval += '<td>'+value.prd_name+'</td>';
+          tabval += '<td id="right">'+price+'</td>';
+          tabval += '<td id="qty">'+value.quantity+'</td>';
+          tabval += '<td id="cancel_'+ value.prd_id +'" class="cancel"><img src="./img/cancel.png"  alt="Cancel"  width="30"></td>';
+          tabval += '</tr>';
+        }); // End of Each Loop
+
+        $('#cartdata').append(tabval);
+
+        console.log('You received some data', data);
+        console.log('Total : ', total);
+//          var template = $('#product-template').html();
+//             template = template.replace(/{{price}}/ig, total);
+        passTotal(total.toFixed(2), shipment.toFixed(2));
+
+        cartCancel(); // Cart Delete Function in data.js
+/*        console.log("Cancelled", cancel);
+        if (cancel == 1) {
+          location.reload();
+          window.stop
+        }
+*/
+      }, // End of Success
+    }); // End of Ajax
+//    }); // End of Cart Icon Click
+
+      function passTotal(total, shipment){
+      $('#totalval').append(total);
+      $('#shipval').append(shipment);
+      grandTotal =  parseFloat(total) + parseFloat(shipment);
+      grandTotal = grandTotal.toFixed(2);
+
+      $('#grandtotval').append(grandTotal);
+        '<td id="total" style="color:green;">'+total+'</td>';
+                console.log('grandTotal : ', grandTotal);
+        '<td id="grandtotval" style="color:green;">'+ grandTotal +'</td>';
+      };
+
+
+
+/*  function orderDetail(){
+    $.ajax({
+      url: 'dbaction',
+      type:'POST',
+      data: {
+              orderNum : orderNum,
+              orderDate : orderDate,
+              orderAmt : grandTotal,
+              orderStat : 'C',
+      },
+      success: (data) => {alert("Order Details Inserted into Cart");}
+    }); //End of Ajax
+  } //End of Order Detail
+*/
+
+  }); // End of Document
+
+</script>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <header>
+<!--            <div id="branding">
+              <h1><span class="highlight">DIY</span>store.in</h1>
+            </div> -->
+          <h1 id="branding"><span class="highlight">DIY</span>store.in</h1>
+          <nav>
+            <ul>
+              <li class="navcurrent"><a href="main.html">Home</a></li>
+              <li><a href="#">Products</a>
+                <ul>
+                  <li><a href="./product.html?page=solder">Soldering Accessories</a></li>
+                  <li><a href="./product.html?page=module">Modules</a></li>
+                  <li><a href="./product.html?page=active">Active Components</a></li>
+                  <li><a href="./product.html?page=passive">Passive Components</a></li>
+                </ul>
+              </li>
+              <li><a href="contact.html">Contact Us</a></li>
+
+              <li id="cart-icon"><a href="./cart.html"><img src="./img/cartd.png" onmouseover="this.src='./img/carts.png'"
+                      onmouseout="this.src='./img/cartd.png'" alt="cart"  width="20" height="20"></a></li>
+              <li id="cart-count"><a href="#">a</a></li>
+
+            </ul>
+          </nav>
+      </header>
+
+     <div class="order-detail">
+       <div class="order">Order #</div>
+       <div class="order-no"></div>
+     </div>
+
+<!--
+     <div class="test">
+        <table class="tabhead">
+                 <thead>
+                     <tr>
+                         <th style="width:10%">S.No</th>
+                         <th style="width:15%">Product</th>
+                         <th style="width:32%">Item Name</th>
+                         <th style="width:13%">Price</th>
+                         <th style="width:15%">Quantity</th>
+                         <th style="width:15%">Cancel</th>
+                     </tr>
+                 </thead>
+               </table>
+     </div>
+-->
+     <div class="paycenter">
+        <table class="tabdata" id="cartdata">
+          <colgroup>
+            <col span="1" style="width: 6%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 50%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 25%;">
+          </colgroup>
+          <!--<thead class="prodhead">-->
+          <thead>
+              <tr>
+                  <th id="sno">S.No</th>
+                  <th>Product</th>
+                  <th>Description</th>
+                  <th id="right">Price</th>
+                  <th id="qtybig">Quantity</th>
+                  <th id="qtysmall">Qty</th>
+                  <th>Cancel</th>
+              </tr>
+          </thead>
+
+          <tbody>
+<!--              <tr>
+                  <td id="sno">1</td>
+                  <td id="picture"><img src="./img/solder1.jpg" alt="Soldering" width="50"></td>
+                  <td>Solder Flux Paste</td>
+                  <td id="right">100.00</td>
+                  <td id="qty">1</td>
+                  <td id="picture"><img src="./img/cancel.png" alt="Cancel" width="30"></td>
+              </tr> -->
+          </tbody>
+        </table>
+     </div>
+
+      <div class="total">
+        <table class="tottab">
+          <colgroup>
+            <col span="1" style="width: 6%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 50%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 25%;">
+          </colgroup>
+          <tbody>
+              <tr>
+                  <td></td>
+                  <td></td>
+                  <td id="right" style="font-size:20px;color:#003D7E;">Total</td>
+                  <td id="totalval" style="color:green;"></td>
+                  <td></td>
+                  <td></td>
+              </tr>
+              <tr style="background-color:white";>
+                  <td></td>
+                  <td></td>
+                  <td id="right" style="font-size:20px;color:#003D7E;"> (+) Shipping</td>
+                  <td id="shipval" style="border-bottom: solid; border-color: #143D5D; color:green;"></td>
+                  <td></td>
+                  <td></td>
+              </tr>
+              <tr>
+                  <td></td>
+                  <td></td>
+                  <td id="right" style="font-size:24px;font-weight:bold;color:#003D7E;padding-top:10px;">Order Total</td>
+                  <td id="grandtotval" style="border-bottom: solid; border-color: #143D5D;padding-top:10px;color:green; font-weight:bold"></td>
+                  <td></td>
+                  <td></td>
+              </tr>
+          </tbody>
+        </table>
+<!--        <div class="total-tax">Total:</div>
+        <div class="amount">500.00</div> -->
+      </div>
+
+
+      <div class="pay">
+        <button id="payment" type="button" onclick="paymentGateway()">Proceed to Pay</button><br><br>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+      <div class="copyright">DIYStore.in, Copyright &copy; 2018</div>
+       <div class="phone">
+       <img src="./img/phone.png" alt="Phone" width="20" height="20">&nbsp;&nbsp;+91 9893253310</div>
+  </footer>
+
+</body>
+</html>

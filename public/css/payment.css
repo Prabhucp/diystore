@@ -1,0 +1,82 @@
+/* Global */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+html, body{
+  height:100%;
+  font: 15px/1.5 Arial, Helvetica, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+header{
+  min-height: 50px;
+  padding-top: 10px;
+  padding-left: 10px;
+  background: #107895;
+  color: #ffffff;
+  border-bottom: #E19503 8px solid;
+}
+
+.order-details, #user-info{
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  width: 40%;
+  border: #107895 4px solid;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.order-details h1, #user-info h1{
+    text-align: center;
+    background-color:  #F8C15C;
+    display: flex;
+    flex-direction: column;
+}
+
+.order{
+}
+
+#label{
+  font-weight: bold;
+  padding: 10px;
+}
+#value {
+  font-weight: normal;
+  padding-top: 15px;
+  padding-right: 15px;
+}
+
+ .name{
+   display: flex;
+   flex-direction: row;
+   padding: 5px;
+ }
+
+.payment{
+  width: 150px;
+  margin: 0 auto;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#useraddress{
+  display: inline-block;
+  flex-direction: column;
+  padding-left: 15px;
+}
+#user-info label{
+  display: inline-block;
+}
+
+label fname{
+  padding-right: 20px;
+}
